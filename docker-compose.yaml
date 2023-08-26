@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  car-simulator-mysql:
+    image: mysql:8
+    container_name: car-simulator-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: routes
+    ports:
+      - 43306:3306
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    networks:
+      - network1
+
+  car-simulator-freight:
+    build: .
+    container_name: car-simulator-freight
+    volumes:
+      - .:/app
+    networks:
+      - network1 
+    depends_on:   
+      - car-simulator-mysql
+networks:
+  network1:
+    name: car-simulator-kafka_internal-kafka-network
+    external: true
