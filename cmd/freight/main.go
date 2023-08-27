@@ -42,11 +42,19 @@ var (
 			Help: "Total number of errors",
 		},
 	)
+
+	routesFinished = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Name: "routes_finished_total",
+			Help: "Total number of finished routes",
+		},
+	)
 )
 
 func init() {
 	prometheus.MustRegister(routesCreated)
 	prometheus.MustRegister(routesStarted)
+	prometheus.MustRegister(routesFinished)
 	prometheus.MustRegister(errorsTotal)
 }
 
@@ -113,6 +121,8 @@ func main() {
 				log.Println(err)
 				errorsTotal.Inc()
 			}
+
+			routesFinished.Inc()
 		}
 	}
 }
