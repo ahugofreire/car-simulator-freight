@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ahugofreire/car-simulator-freight/internal/freight/entity"
@@ -36,16 +35,15 @@ func (u *ChangeRouteStatusUseCase) Execute(input ChangeRouteStatusInput) (*Chang
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(route)
+
 	if input.Event == "RouteStarted" {
-		fmt.Println(input)
 		route.Start(time.Time(input.StartedAt))
 	}
 
 	if input.Event == "RouteFinished" {
 		route.Finish(time.Time(input.FinishedAt))
 	}
-	fmt.Println("id para o update")
+
 	err = u.Repository.Update(route)
 	if err != nil {
 		return nil, err
